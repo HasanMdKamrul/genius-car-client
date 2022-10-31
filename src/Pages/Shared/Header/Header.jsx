@@ -5,12 +5,14 @@ import logo from "../../../assets/logo.svg";
 const Header = () => {
   const menuItems = (
     <>
-      <Link to="/">Home</Link>
+      <Link className="font-semibold" to="/">
+        Home
+      </Link>
     </>
   );
 
   return (
-    <div className="navbar bg-base-100">
+    <div className="navbar bg-base-100 h-24 mb-12">
       <div className="navbar-start">
         <div className="dropdown">
           <label tabIndex={0} className="btn btn-ghost lg:hidden">
@@ -44,7 +46,7 @@ const Header = () => {
         <ul className="menu menu-horizontal p-0">{menuItems}</ul>
       </div>
       <div className="navbar-end">
-        <a className="btn">Get started</a>
+        <button className="btn btn-outline btn-accent">Appointment</button>
       </div>
     </div>
   );
