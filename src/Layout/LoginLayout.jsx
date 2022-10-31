@@ -1,12 +1,12 @@
 import React from "react";
-import Login from "../Pages/Login/Login";
+import { Outlet } from "react-router-dom";
 import Header from "../Pages/Shared/Header/Header";
 
 const LoginLayout = () => {
   return (
     <div>
       <Header />
-      <Login />
+      <Outlet />
     </div>
   );
 };
