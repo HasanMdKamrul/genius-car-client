@@ -18,18 +18,18 @@ const About = () => {
             className=" border-4 top-44 h-[332px] absolute right-0 rounded-lg shadow-2xl w-[327px]"
           />
         </div>
-        <div className="w-1/2">
+        <div className="w-1/2 p-2">
           <p className="text-lg text-orange-600 font-bold">About us</p>
-          <h1 className="text-5xl font-bold">
+          <h1 className="text-5xl font-bold py-5">
             We are qualified <br />& of experience <br /> in this field
           </h1>
-          <p className="py-6">
+          <p className="py-4">
             There are many variations of passages of Lorem Ipsum available, but
             the majority have suffered alteration in some form, by injected
             humour, or randomised words which don't look even slightly
             believable.
           </p>
-          <p className="py-6">
+          <p className="py-4">
             the majority have suffered alteration in some form, by injected
             humour, or randomised words which don't look even slightly
             believable.
