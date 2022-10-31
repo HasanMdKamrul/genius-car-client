@@ -1,9 +1,27 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import image from "../../assets/images/login/login.svg";
+import { AuthContext } from "../../contexts/AuthProvider/AuthProvider";
 const Login = () => {
+  const { login } = useContext(AuthContext);
+
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    const form = e.target;
+    const email = form.email.value;
+    const password = form.password.value;
+
+    const userLogin = async () => {
+      try {
+        const result = await login(email, password);
+        console.log(result.user);
+        console.log("User Logged in");
+      } catch (error) {
+        console.log(error.message);
+      }
+    };
+    userLogin();
   };
   return (
     <div className="hero ">
