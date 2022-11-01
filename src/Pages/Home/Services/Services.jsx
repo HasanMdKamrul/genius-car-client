@@ -7,7 +7,7 @@ const Services = () => {
   useEffect(() => {
     const laodData = async () => {
       try {
-        const response = await fetch("services.json");
+        const response = await fetch("http://localhost:15000/services");
         response.ok ? console.log("Ok") : console.log("failed");
         const data = await response.json();
         setServices(data);
