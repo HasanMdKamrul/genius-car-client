@@ -1,9 +1,26 @@
+import { GoogleAuthProvider } from "firebase/auth";
 import React, { useContext } from "react";
+import { FaFacebook, FaGoogle, FaInstagram } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import image from "../../assets/images/login/login.svg";
 import { AuthContext } from "../../contexts/AuthProvider/AuthProvider";
 const Signup = () => {
-  const { createUser, verifyEmail } = useContext(AuthContext);
+  const { createUser, verifyEmail, socialAuthentication } =
+    useContext(AuthContext);
+
+  const googleProvider = new GoogleAuthProvider();
+
+  const socialHandle = () => {
+    const socialAuth = async () => {
+      try {
+        const result = await socialAuthentication(googleProvider);
+        console.log(result.user);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    socialAuth();
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -82,12 +99,6 @@ const Signup = () => {
                 placeholder="password"
                 className="input input-bordered"
               />
-              <p className="text-center p-5">
-                Already have an account?{" "}
-                <Link className="text-lg text-orange-600 font-bold" to="/login">
-                  Login
-                </Link>{" "}
-              </p>
             </div>
             <div className="form-control mt-6">
               <input
@@ -96,6 +107,23 @@ const Signup = () => {
                 value="Sign Up"
               />
             </div>
+            <div className="mt-[30px] text-center text-lg  font-semibold">
+              <small className="mb-[30px]"> Or Log In With</small>
+              <div className="flex justify-center">
+                <FaFacebook className="w-[55px] h-[55px] mr-4 text-primary" />
+                <FaInstagram className="w-[55px] h-[55px] mr-4 text-blue-500" />
+                <FaGoogle
+                  onClick={socialHandle}
+                  className="w-[55px] h-[55px] text-success"
+                />
+              </div>
+            </div>
+            <p className="text-center p-5">
+              Already have an account?{" "}
+              <Link className="text-lg text-orange-600 font-bold" to="/login">
+                Login
+              </Link>{" "}
+            </p>
           </div>
         </form>
       </div>
