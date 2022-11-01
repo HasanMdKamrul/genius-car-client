@@ -4,6 +4,7 @@ import {
   onAuthStateChanged,
   sendEmailVerification,
   signInWithEmailAndPassword,
+  signInWithPopup,
   updateProfile,
 } from "firebase/auth";
 import { useEffect, useState } from "react";
@@ -44,6 +45,11 @@ const useFirebase = () => {
     return updateProfile(auth.currentUser, profileInfo);
   };
 
+  const socialAuthentication = (provider) => {
+    setLoading(true);
+    return signInWithPopup(auth, provider);
+  };
+
   const authInfo = {
     loading,
     user,
@@ -51,6 +57,7 @@ const useFirebase = () => {
     createUser,
     verifyEmail,
     updateUserInfo,
+    socialAuthentication,
   };
 
   return authInfo;

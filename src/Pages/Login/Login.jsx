@@ -1,9 +1,25 @@
+import { GoogleAuthProvider } from "firebase/auth";
 import React, { useContext } from "react";
+import { FaFacebook, FaGoogle, FaInstagram } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import image from "../../assets/images/login/login.svg";
 import { AuthContext } from "../../contexts/AuthProvider/AuthProvider";
 const Login = () => {
-  const { login } = useContext(AuthContext);
+  const { login, socialAuthentication } = useContext(AuthContext);
+
+  const googleProvider = new GoogleAuthProvider();
+
+  const socialHandle = () => {
+    const socialAuth = async () => {
+      try {
+        const result = await socialAuthentication(googleProvider);
+        console.log(result.user);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    socialAuth();
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -64,6 +80,24 @@ const Login = () => {
                   Forgot password?
                 </a>
               </label>
+              <div className="form-control mt-6">
+                <input
+                  className="btn btn-primary"
+                  type="submit"
+                  value="Login"
+                />
+              </div>
+              <div className="mt-[30px] text-center text-lg  font-semibold">
+                <small className="mb-[30px]"> Or Log In With</small>
+                <div className="flex justify-center">
+                  <FaFacebook className="w-[55px] h-[55px] mr-4 text-primary" />
+                  <FaInstagram className="w-[55px] h-[55px] mr-4 text-blue-500" />
+                  <FaGoogle
+                    onClick={socialHandle}
+                    className="w-[55px] h-[55px] text-success"
+                  />
+                </div>
+              </div>
               <p className="text-center p-5">
                 New to genius car?{" "}
                 <Link
@@ -73,9 +107,6 @@ const Login = () => {
                   Sign Up
                 </Link>{" "}
               </p>
-            </div>
-            <div className="form-control mt-6">
-              <input className="btn btn-primary" type="submit" value="Login" />
             </div>
           </div>
         </form>
