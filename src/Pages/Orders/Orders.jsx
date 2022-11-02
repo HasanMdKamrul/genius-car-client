@@ -26,6 +26,34 @@ const Orders = () => {
     }
   };
 
+  const handleApproveStatus = (id) => {
+    const dataUpdate = async () => {
+      try {
+        const response = await fetch(`http://localhost:15000/orders/${id}`, {
+          method: "PATCH",
+          headers: {
+            "content-type": "application/json",
+          },
+          body: JSON.stringify({ status: "Approved" }),
+        });
+        const data = await response.json();
+        if (data.modifiedCount > 0) {
+          console.log(data);
+          const remaining = orders.filter((odr) => odr._id !== id);
+          const approving = orders.find((odr) => odr._id === id);
+          // ** This is for UI
+          approving.status = "Approved";
+
+          const newOrders = [approving, ...remaining];
+          setOrders(newOrders);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    dataUpdate();
+  };
+
   useEffect(() => {
     // ** data load
 
@@ -65,6 +93,7 @@ const Orders = () => {
           <tbody>
             {orders.map((order) => (
               <OrdersRow
+                handleApproveStatus={handleApproveStatus}
                 handleDelete={handleDelete}
                 key={order._id}
                 order={order}
