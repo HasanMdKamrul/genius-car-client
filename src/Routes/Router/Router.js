@@ -4,6 +4,8 @@ import Main from "../../Layout/Main";
 import Checkout from "../../Pages/Checkout/Checkout";
 import Home from "../../Pages/Home/Home/Home";
 import Signup from "../../Pages/Login/Signup";
+import Orders from "../../Pages/Orders/Orders";
+import PrivateRoute from "../PrivateRoute/PrivateRoute";
 
 const { createBrowserRouter } = require("react-router-dom");
 
@@ -15,6 +17,15 @@ const router = createBrowserRouter([
       {
         path: "/",
         element: <Home />,
+      },
+      {
+        path: "/orders",
+        element: (
+          <PrivateRoute>
+            {" "}
+            <Orders />
+          </PrivateRoute>
+        ),
       },
       {
         path: "/services/:id",
