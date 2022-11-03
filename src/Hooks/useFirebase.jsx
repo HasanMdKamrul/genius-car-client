@@ -5,6 +5,7 @@ import {
   sendEmailVerification,
   signInWithEmailAndPassword,
   signInWithPopup,
+  signOut,
   updateProfile,
 } from "firebase/auth";
 import { useEffect, useState } from "react";
@@ -51,10 +52,16 @@ const useFirebase = () => {
     return signInWithPopup(auth, provider);
   };
 
+  const logOut = () => {
+    setLoading(true);
+    return signOut(auth);
+  };
+
   const authInfo = {
     loading,
     user,
     login,
+    logOut,
     createUser,
     verifyEmail,
     updateUserInfo,

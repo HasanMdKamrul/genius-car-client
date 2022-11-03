@@ -1,7 +1,7 @@
 import { GoogleAuthProvider } from "firebase/auth";
 import React, { useContext } from "react";
 import { FaFacebook, FaGoogle, FaInstagram } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import image from "../../assets/images/login/login.svg";
 import { AuthContext } from "../../contexts/AuthProvider/AuthProvider";
 const Login = () => {
@@ -9,11 +9,17 @@ const Login = () => {
 
   const googleProvider = new GoogleAuthProvider();
 
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  let from = location.state?.from?.pathname || "/";
+
   const socialHandle = () => {
     const socialAuth = async () => {
       try {
         const result = await socialAuthentication(googleProvider);
         console.log(result.user);
+        navigate(from, { replace: true });
       } catch (error) {
         console.log(error);
       }
@@ -33,6 +39,7 @@ const Login = () => {
         const result = await login(email, password);
         console.log(result.user);
         console.log("User Logged in");
+        navigate(from, { replace: true });
       } catch (error) {
         console.log(error.message);
       }
@@ -71,12 +78,12 @@ const Login = () => {
               <input
                 required
                 name="password"
-                type="text"
+                type="password"
                 placeholder="password"
                 className="input input-bordered"
               />
               <label className="label">
-                <a href="#" className="label-text-alt link link-hover">
+                <a href="/" className="label-text-alt link link-hover">
                   Forgot password?
                 </a>
               </label>
