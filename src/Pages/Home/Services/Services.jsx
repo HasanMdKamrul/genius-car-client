@@ -7,7 +7,9 @@ const Services = () => {
   useEffect(() => {
     const laodData = async () => {
       try {
-        const response = await fetch("http://localhost:15000/services");
+        const response = await fetch(
+          "https://genius-car-server-ruby.vercel.app/services"
+        );
         response.ok ? console.log("Ok") : console.log("failed");
         const data = await response.json();
         setServices(data);

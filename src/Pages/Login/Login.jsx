@@ -19,7 +19,39 @@ const Login = () => {
       try {
         const result = await socialAuthentication(googleProvider);
         console.log(result.user);
-        navigate(from, { replace: true });
+
+        // ** creating the user as payload
+
+        const currentUser = {
+          email: result.user.email,
+        };
+
+        // ** sending the payload to the server
+
+        const sendPayLoad = async () => {
+          try {
+            const response = await fetch(
+              `https://genius-car-server-ruby.vercel.app/jwt`,
+              {
+                method: "POST",
+                headers: {
+                  "content-type": "application/json",
+                },
+                body: JSON.stringify(currentUser),
+              }
+            );
+
+            const data = await response.json();
+
+            const token = data.token;
+
+            localStorage.setItem("geniusToken", token);
+            navigate(from, { replace: true });
+          } catch (error) {
+            console.log(error);
+          }
+        };
+        sendPayLoad();
       } catch (error) {
         console.log(error);
       }

@@ -54,6 +54,7 @@ const useFirebase = () => {
 
   const logOut = () => {
     setLoading(true);
+    localStorage.removeItem("geniusToken");
     return signOut(auth);
   };
 

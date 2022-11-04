@@ -18,7 +18,7 @@ const OrdersRow = ({ order, handleDelete, handleApproveStatus }) => {
     const loadData = async () => {
       try {
         const response = await fetch(
-          `http://localhost:15000/services/${serviceId}`
+          `https://genius-car-server-ruby.vercel.app/services/${serviceId}`
         );
         const data = await response.json();
 

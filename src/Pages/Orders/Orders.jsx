@@ -4,15 +4,18 @@ import OrdersRow from "./OrdersRow";
 
 const Orders = () => {
   const [orders, setOrders] = useState([]);
-  const { user } = useContext(AuthContext);
+  const { user, logOut } = useContext(AuthContext);
 
   const handleDelete = (id) => {
     const proceed = window.confirm(
       "Are you sure, you want to cancel this order"
     );
     if (proceed) {
-      fetch(`http://localhost:15000/orders/${id}`, {
+      fetch(`https://genius-car-server-ruby.vercel.app/orders/${id}`, {
         method: "DELETE",
+        headers: {
+          authorization: `Bearer ${localStorage.getItem("geniusToken")}`,
+        },
       })
         .then((res) => res.json())
         .then((data) => {
@@ -29,13 +32,17 @@ const Orders = () => {
   const handleApproveStatus = (id) => {
     const dataUpdate = async () => {
       try {
-        const response = await fetch(`http://localhost:15000/orders/${id}`, {
-          method: "PATCH",
-          headers: {
-            "content-type": "application/json",
-          },
-          body: JSON.stringify({ status: "Approved" }),
-        });
+        const response = await fetch(
+          `https://genius-car-server-ruby.vercel.app/orders/${id}`,
+          {
+            method: "PATCH",
+            headers: {
+              "content-type": "application/json",
+              authorization: `Bearer ${localStorage.getItem("geniusToken")}`,
+            },
+            body: JSON.stringify({ status: "Approved" }),
+          }
+        );
         const data = await response.json();
         if (data.modifiedCount > 0) {
           console.log(data);
@@ -60,8 +67,18 @@ const Orders = () => {
     const loadData = async () => {
       try {
         const response = await fetch(
-          `http://localhost:15000/orders?email=${user?.email}`
+          `https://genius-car-server-ruby.vercel.app/orders?email=${user?.email}`,
+          {
+            headers: {
+              authorization: `Bearer ${localStorage.getItem("geniusToken")}`,
+            },
+          }
         );
+
+        if (response.status === 403 || response.status === 401) {
+          logOut();
+        }
+
         const data = await response.json();
         console.log(data);
         setOrders(data);
@@ -70,7 +87,7 @@ const Orders = () => {
       }
     };
     loadData();
-  }, [user?.email]);
+  }, [user?.email, logOut]);
 
   return (
     <div>

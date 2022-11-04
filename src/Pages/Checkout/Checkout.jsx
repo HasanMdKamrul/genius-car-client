@@ -30,13 +30,17 @@ const Checkout = () => {
 
     const sendData = async () => {
       try {
-        const response = await fetch(`http://localhost:15000/orders`, {
-          method: "POST",
-          headers: {
-            "content-type": "application/json",
-          },
-          body: JSON.stringify(order),
-        });
+        const response = await fetch(
+          `https://genius-car-server-ruby.vercel.app/orders`,
+          {
+            method: "POST",
+            headers: {
+              "content-type": "application/json",
+              authorization: `Bearer ${localStorage.getItem("geniusToken")}`,
+            },
+            body: JSON.stringify(order),
+          }
+        );
 
         const data = await response.json();
 
