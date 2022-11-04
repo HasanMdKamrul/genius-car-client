@@ -1,12 +1,16 @@
 import { GoogleAuthProvider } from "firebase/auth";
 import React, { useContext } from "react";
 import { FaFacebook, FaGoogle, FaInstagram } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import image from "../../assets/images/login/login.svg";
 import { AuthContext } from "../../contexts/AuthProvider/AuthProvider";
+import sendPayLoad from "../../Utilities/AuthToken";
 const Signup = () => {
   const { createUser, verifyEmail, socialAuthentication } =
     useContext(AuthContext);
+  const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || "/";
 
   const googleProvider = new GoogleAuthProvider();
 
@@ -15,6 +19,15 @@ const Signup = () => {
       try {
         const result = await socialAuthentication(googleProvider);
         console.log(result.user);
+
+        // ** creating the user as payload
+
+        const currentUser = {
+          email: result.user.email,
+        };
+
+        sendPayLoad(currentUser);
+        navigate(from, { replace: true });
       } catch (error) {
         console.log(error);
       }
@@ -25,7 +38,6 @@ const Signup = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     const form = e.target;
-    const name = form.name.value;
     const email = form.email.value;
     const password = form.password.value;
 
@@ -36,6 +48,12 @@ const Signup = () => {
         const result = await createUser(email, password);
         console.log(result.user);
         console.log("user cretaed");
+        const currentUser = {
+          email: result.user.email,
+        };
+        console.log("User Logged in");
+        sendPayLoad(currentUser);
+        navigate(from, { replace: true });
         // ** verification email send
         const emailVerification = async () => {
           try {
@@ -120,7 +138,11 @@ const Signup = () => {
             </div>
             <p className="text-center p-5">
               Already have an account?{" "}
-              <Link className="text-lg text-orange-600 font-bold" to="/login">
+              <Link
+                onClick={socialHandle}
+                className="text-lg text-orange-600 font-bold"
+                to="/login"
+              >
                 Login
               </Link>{" "}
             </p>

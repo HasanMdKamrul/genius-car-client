@@ -4,6 +4,7 @@ import { FaFacebook, FaGoogle, FaInstagram } from "react-icons/fa";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import image from "../../assets/images/login/login.svg";
 import { AuthContext } from "../../contexts/AuthProvider/AuthProvider";
+import sendPayLoad from "../../Utilities/AuthToken";
 const Login = () => {
   const { login, socialAuthentication } = useContext(AuthContext);
 
@@ -26,32 +27,8 @@ const Login = () => {
           email: result.user.email,
         };
 
-        // ** sending the payload to the server
-
-        const sendPayLoad = async () => {
-          try {
-            const response = await fetch(
-              `https://genius-car-server-ruby.vercel.app/jwt`,
-              {
-                method: "POST",
-                headers: {
-                  "content-type": "application/json",
-                },
-                body: JSON.stringify(currentUser),
-              }
-            );
-
-            const data = await response.json();
-
-            const token = data.token;
-
-            localStorage.setItem("geniusToken", token);
-            navigate(from, { replace: true });
-          } catch (error) {
-            console.log(error);
-          }
-        };
-        sendPayLoad();
+        sendPayLoad(currentUser);
+        navigate(from, { replace: true });
       } catch (error) {
         console.log(error);
       }
@@ -70,7 +47,11 @@ const Login = () => {
       try {
         const result = await login(email, password);
         console.log(result.user);
+        const currentUser = {
+          email: result.user.email,
+        };
         console.log("User Logged in");
+        sendPayLoad(currentUser);
         navigate(from, { replace: true });
       } catch (error) {
         console.log(error.message);
