@@ -5,6 +5,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import image from "../../assets/images/login/login.svg";
 import { AuthContext } from "../../contexts/AuthProvider/AuthProvider";
 import sendPayLoad from "../../Utilities/AuthToken";
+// ** signup
 const Signup = () => {
   const { createUser, verifyEmail, socialAuthentication } =
     useContext(AuthContext);
@@ -19,9 +20,7 @@ const Signup = () => {
       try {
         const result = await socialAuthentication(googleProvider);
         console.log(result.user);
-
         // ** creating the user as payload
-
         const currentUser = {
           email: result.user.email,
         };
